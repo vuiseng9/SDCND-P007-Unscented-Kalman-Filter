@@ -38,7 +38,8 @@ int main()
   vector<VectorXd> estimations;
   vector<VectorXd> ground_truth;
 
-  h.onMessage([&ukf,&tools,&estimations,&ground_truth](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
+  int k = 0;
+  h.onMessage([&ukf,&tools,&estimations,&ground_truth,&k](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
@@ -54,6 +55,7 @@ int main()
         std::string event = j[0].get<std::string>();
         
         if (event == "telemetry") {
+          k++;
           // j[1] is the data JSON object
           
           string sensor_measurment = j[1]["sensor_measurement"];
@@ -128,6 +130,14 @@ int main()
     	  estimations.push_back(estimate);
 
     	  VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
+
+		  cout << "\nTime Step: " << k << ", Sensor: " << sensor_type << endl;
+          cout << setw(15) << "Estimate" << setw(15) << "Ground Truth" << setw(15) << "RMSE" << endl;
+
+          cout << setw(15) <<  estimate(0) << setw(15) << gt_values(0) << setw(15) << RMSE(0) << endl;
+          cout << setw(15) <<  estimate(1) << setw(15) << gt_values(1) << setw(15) << RMSE(1) << endl;
+          cout << setw(15) <<  estimate(2) << setw(15) << gt_values(2) << setw(15) << RMSE(2) << endl;
+          cout << setw(15) <<  estimate(3) << setw(15) << gt_values(3) << setw(15) << RMSE(3) << endl;
 
           json msgJson;
           msgJson["estimate_x"] = p_x;
