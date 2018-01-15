@@ -86,14 +86,12 @@ public:
 
   /**
    * Init
-   * @param meas_package The measurement data to initialize ukf state
+   * @param meas_package first measurement to initialize ukf state
    */
   void Init(MeasurementPackage meas_package);
 
-  void GenerateSigmaPoints(MatrixXd* Xsig_out);
-  
   void AugmentedSigmaPoints(MatrixXd* Xsig_out);
- 
+
   void SigmaPointPrediction(double delta_t, MatrixXd Xsig_aug, MatrixXd* Xsig_out);
 
   void PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* P_out);
@@ -105,21 +103,20 @@ public:
    */
   void Prediction(double delta_t);
 
+  void PredictLidarMeasurement(VectorXd* z_out, MatrixXd* Zsig_out, MatrixXd* S_out);
   /**
    * Updates the state and the state covariance matrix using a laser measurement
    * @param meas_package The measurement at k+1
    */
-  void PredictLidarMeasurement(VectorXd* z_out, MatrixXd* Zsig_out, MatrixXd* S_out);
-
   void UpdateLidar(MeasurementPackage meas_package);
 
   void PredictRadarMeasurement(VectorXd* z_out, MatrixXd* Zsig_out, MatrixXd* S_out);
-
   /**
    * Updates the state and the state covariance matrix using a radar measurement
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+
 };
 
 #endif /* UKF_H */

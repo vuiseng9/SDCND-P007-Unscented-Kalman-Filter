@@ -9,6 +9,15 @@ Tools::Tools() {}
 
 Tools::~Tools() {}
 
+void Tools::CalculateNIS( const VectorXd z, 
+                    const VectorXd z_pred,
+                    const MatrixXd S) 
+{
+    VectorXd y = z - z_pred;
+    VectorXd NIS = y.transpose()  * S.inverse() * y;
+    std::cout << "NIS:" << NIS << std::endl;
+}
+
 VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
                               const vector<VectorXd> &ground_truth) {
     VectorXd rmse(4);

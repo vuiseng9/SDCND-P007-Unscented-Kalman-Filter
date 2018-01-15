@@ -24,6 +24,8 @@ public:
   */
   VectorXd CalculateRMSE(const vector<VectorXd> &estimations, const vector<VectorXd> &ground_truth);
 
+  void CalculateNIS( const VectorXd z, const VectorXd z_pred, const MatrixXd S);
+
 };
 
 #endif /* TOOLS_H_ */
